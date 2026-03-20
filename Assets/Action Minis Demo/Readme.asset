@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 407619c5c19a54982b3880b5a085c597, type: 3}
+  iconMaxWidth: 192
+  title: Action Minis | Free Demo
+  sections:
+  - heading: 🔍 About
+    text: "Thank you for downloading the Action Minis | Free Demo asset.
+\n\nThis lowpoly character is part of the 'Mini Simple Characters' series and serves as a demo base to test compatibility and workflow before purchasing other characters or packs derived from this basemesh."
+    linkText: 
+    url: 
+  - heading: 🧩 Modular System
+    text: "Mix and match multiple parts to generate character variations.
+\n\nPerfect for:
+\n🔸Indie games
+\n🔸Prototypes
+\n🔸Full production projects
+"
+    linkText: 
+    url: 
+  - heading: ⚡ Performance Optimized
+    text: "🔸Designed for real-time games
+\n🔸Lowpoly geometry
+\n🔸Single texture atlas
+\n🔸Minimal draw calls
+\n\n
+\n✅ PC, Console and Mobile-friendly
+\n✅ Lightweight scenes
+\n✅ Fast rendering
+"
+    linkText: 
+    url: 
+  - heading: 🎨 Easy Color Customization
+    text: "All models share a single texture atlas, reducing performance costs and simplifying texture management in your project.
+\nAdjust texture offsets to create new color variations."
+    linkText: 
+    url: 
+  - heading: 🖼️ Textures
+    text: "- Diffuse / Albedo: 256px (.png)\n
+\n✅Fast performance
+\n✅Clean project structure
+\n✅Easy color control
+\n\n
+⚠️ *Some models include multiple material slots (Primary, Secondary, Tertiary, etc).
+\nCheck: Inspector → Skinned Mesh Renderer → Materials"
+    linkText: 
+    url: 
+  - heading: 📐 Models & Polycount
+    text: "- Total | 5.1k Tris\n\n- arms | 1728 Tris\n- chest | 184 Tris\n- head | 632 Tris\n- legs | 2144 Tris\n- nose | 40 Tris\n- pelvis | 192 Tris\n- torso | 192 Tris"
+    linkText: 
+    url: 
+  - heading: 😊 Blendshapes
+    text:  "❌ *This model has no Blendshapes included."
+    linkText:
+    url:
+  - heading: 🕹️ Animations
+    text:  "-Idle\n-Walk\n-Run\n-Jump\n-Loose\n
+\n✅ Humanoid Rig (Mecanim Ready)
+\n✅ Fully rigged and skinned
+
+\n⚠️ *You can use <Generic> rig for custom animations or <Humanoid> to use retarget/mocap animations"
+    linkText:
+    url:
+  - heading: 🧩 Modular Design
+    text:  "This character is designed to be modular, making it easy to create a variety of combinations, allowing you to quickly create unique characters with maximum flexibility."
+    linkText:
+    url:
+  - heading: ⭐ Key Features
+    text:  "
+🔸Modular character workflow\n
+🔸Clean lowpoly stylized design\n
+🔸Game-ready and optimized assets\n
+🔸Mobile-ready performance\n
+🔸Easy color variation workflow\n
+🔸Cross-engine compatibility\n
+🔸Production-friendly pipeline
+"
+    linkText:
+    url:
+  - heading: 🚀 Save Time. Ship Faster.
+    text:  "Go from idea to playable character in minutes.
+\nBuilt for developers who value speed, flexibility and performance."
+    linkText:
+  - heading:
+    text:  "💚 Each asset has been carefully crafted to add a unique touch to your game project!"
+    linkText:
+    url:
+  - heading: 📫Contact/Supportt
+    text: 
+    linkText: Asset Store Profile 
+    url: https://assetstore.unity.com/publishers/20594
+   - heading: 🌐 Website
+    text: "More infos, assets and exclusive content:"
+    linkText: joaobaltieri.com
+    url: https://joaobaltieri.com
+    linkText: Twitter
+    url: https://twitter.com/joaobaltieri
+  loadedLayout: 1
