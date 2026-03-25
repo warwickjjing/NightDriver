@@ -1,4 +1,7 @@
 using UnityEngine;
+using NightDriver.Character;
+using NightDriver.Dialogue;
+using NightDriver.UI;
 
 namespace NightDriver.Character.Movement
 {
@@ -48,6 +51,19 @@ namespace NightDriver.Character.Movement
 
         private void Update()
         {
+            // 폰 UI 열림, 대화 중, 차량 탑승(좌석) 시에는 이동 입력을 잠급니다.
+            if (PhoneUIController.IsAnyPhoneVisible
+                || (DialogueService.Instance != null && DialogueService.Instance.IsRunning)
+                || PlayerControlLock.VehicleSeated)
+            {
+                // 중력/접지 처리는 유지해서 물리적으로 뜨지 않게 합니다.
+                if (controller.isGrounded && verticalVelocity < 0f)
+                    verticalVelocity = _groundedStickVelocity;
+                verticalVelocity += _gravity * Time.deltaTime;
+                controller.Move(new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
+                return;
+            }
+
             float x = Input.GetAxisRaw("Horizontal");
             float z = Input.GetAxisRaw("Vertical");
             var input = new Vector3(x, 0f, z);

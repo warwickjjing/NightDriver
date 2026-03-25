@@ -1,4 +1,7 @@
 using UnityEngine;
+using NightDriver.Character;
+using NightDriver.Dialogue;
+using NightDriver.UI;
 
 namespace NightDriver.Character.Camera
 {
@@ -63,6 +66,14 @@ namespace NightDriver.Character.Camera
 
         private void Update()
         {
+            // 폰 UI 열림, 대화 중, 차량 탑승(좌석) 시에는 카메라 회전 입력을 잠급니다.
+            if (PhoneUIController.IsAnyPhoneVisible
+                || (DialogueService.Instance != null && DialogueService.Instance.IsRunning)
+                || PlayerControlLock.VehicleSeated)
+            {
+                return;
+            }
+
             if (Input.GetKeyDown(toggleCursorKey))
             {
                 SetCursorLocked(!cursorLocked);

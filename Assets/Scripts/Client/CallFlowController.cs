@@ -1,44 +1,45 @@
 using NightDriver.Core;
-using NightDriver.Dialogue;
 using UnityEngine;
 
 namespace NightDriver.Client
 {
     /// <summary>
-    /// 개발용: "대화가 끝나면 콜 완료 → 다음 손님 리스폰" 흐름을 연결합니다.
+    /// "손님 하차 완료" 시점에 콜 완료 처리 후 다음 손님을 스폰합니다.
     /// </summary>
     public sealed class CallFlowController : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private NightManager nightManager;
         [SerializeField] private ClientSpawner spawner;
-        [SerializeField] private DialogueService dialogue;
 
         [Header("Behavior")]
-        [SerializeField] private bool spawnOnEnable = true;
-        [SerializeField] private bool advanceCallOnDialogueComplete = true;
+        [SerializeField] private bool spawnOnEnable = false;
+        [SerializeField] private bool advanceCallOnDropoff = true;
 
         private void Awake()
         {
+            // 씬에 저장된 spawnOnEnable=true가 남아 있으면 시작 시 자동 스폰됩니다.
+            // 폰 콜 수락 플로우에서는 항상 비활성화합니다.
+            spawnOnEnable = false;
+
             if (nightManager == null && GameManager.Instance != null) nightManager = GameManager.Instance.NightManager;
             if (spawner == null) spawner = FindFirstObjectByType<ClientSpawner>();
-            if (dialogue == null) dialogue = DialogueService.Instance != null ? DialogueService.Instance : FindFirstObjectByType<DialogueService>();
         }
 
         private void OnEnable()
         {
-            if (dialogue != null) dialogue.OnDialogueCompleted += HandleDialogueCompleted;
+            ClientBehaviour.OnAnyClientDroppedOff += HandleClientDroppedOff;
             if (spawnOnEnable) spawner?.SpawnCurrentClient();
         }
 
         private void OnDisable()
         {
-            if (dialogue != null) dialogue.OnDialogueCompleted -= HandleDialogueCompleted;
+            ClientBehaviour.OnAnyClientDroppedOff -= HandleClientDroppedOff;
         }
 
-        private void HandleDialogueCompleted()
+        private void HandleClientDroppedOff()
         {
-            if (!advanceCallOnDialogueComplete) return;
+            if (!advanceCallOnDropoff) return;
             if (nightManager == null) return;
 
             nightManager.CompleteOneCall();

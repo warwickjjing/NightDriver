@@ -62,6 +62,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8242448298233085508}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6467681045521561795}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5963602271354886794}
   m_SourcePrefab: {fileID: 100100000, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
 --- !u!1 &7599862490280197976 stripped
 GameObject:
@@ -113,3 +119,49 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.25, z: 0}
+--- !u!114 &6467681045521561795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7599862490280197976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c5721533efe6f40ae51a0e20ccc6af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueRunner: {fileID: 0}
+  dialogueService: {fileID: 0}
+  destinations:
+  - id: Destination_Building
+    location: {fileID: 383722951806198932, guid: d4afdebc1dee4b6449a7249be83498de, type: 3}
+    exitPoint: {fileID: 7453916022252729754, guid: 4d7907147b5a69e44a16f979c983c1be, type: 3}
+    arrivalYarnNode: 
+  - id: Destination_Hospital
+    location: {fileID: 7453916022252729754, guid: 4d7907147b5a69e44a16f979c983c1be, type: 3}
+    exitPoint: {fileID: 383722951806198932, guid: d4afdebc1dee4b6449a7249be83498de, type: 3}
+    arrivalYarnNode: 
+  playerTag: Player
+  arrivalRadius: 5
+  dropOffKey: 101
+  arrivalPromptText: "\uB0B4\uB9AC\uAE30 [E]"
+  promptOffset: {x: 0, y: 2.2, z: 0}
+  canvasSize: {x: 220, y: 52}
+  canvasScale: 0.008
+--- !u!114 &-5963602271354886794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7599862490280197976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f2cb21b56ad8c04f83e213b19c0795b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 1.5
+  arriveDistance: 0.15
+  animator: {fileID: 0}
+  walkAnimBool: IsWalking

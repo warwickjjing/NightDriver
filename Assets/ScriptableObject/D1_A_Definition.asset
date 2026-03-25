@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientId: D1_A
   prefab: {fileID: 7599862490280197976, guid: 4de1522e1b5cf044a81dcc3f9860aa07, type: 3}
+  vehiclePrefab: {fileID: 7983525705756347939, guid: 63be4e4cdfb06d64595d13db75cc4a76, type: 3}
   spawnPointId: D1_A
   startNode: D1_A
-  destinationOptions: []

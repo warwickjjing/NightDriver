@@ -1,3 +1,4 @@
+using NightDriver.Client;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,10 +67,6 @@ namespace NightDriver.Interaction
             if (dialogueRunner == null)
                 dialogueRunner = FindFirstObjectByType<DialogueRunner>();
 
-            var runnerState = dialogueRunner != null ? "FOUND" : "MISSING";
-            var projectState = (dialogueRunner != null && dialogueRunner.YarnProject != null) ? "FOUND" : "MISSING";
-            Debug.Log($"[InteractionPrompt] Awake | runner={runnerState}, yarnProject={projectState}, node='{yarnNodeName}'", this);
-
             promptRoot = BuildPromptUI();
             promptRoot.SetActive(false);
         }
@@ -83,17 +80,18 @@ namespace NightDriver.Interaction
             {
                 playerTransform = playerObj.transform;
             }
-            else
-            {
-                Debug.LogWarning(
-                    $"[InteractionPrompt] '{_playerTag}' 태그를 가진 플레이어를 찾을 수 없습니다. " +
-                    "플레이어 오브젝트의 Tag를 설정해주세요.", this);
-            }
         }
 
         private void Update()
         {
             if (playerTransform == null) return;
+
+            var clientBehaviour = GetComponentInParent<ClientBehaviour>(true);
+            if (clientBehaviour != null && clientBehaviour.IsPickupDialogueBlocked)
+            {
+                if (s_CurrentCandidate == this) ClearCandidate();
+                return;
+            }
 
             // ── 대화 진행 중에는 프롬프트 숨김 ────────────────────────
             if (dialogueRunner != null && dialogueRunner.IsDialogueRunning)
@@ -160,12 +158,10 @@ namespace NightDriver.Interaction
         {
             if (dialogueRunner == null)
             {
-                Debug.LogWarning("[InteractionPrompt] DialogueRunner가 연결되지 않았습니다.", this);
                 return;
             }
             if (string.IsNullOrWhiteSpace(yarnNodeName))
             {
-                Debug.LogWarning("[InteractionPrompt] Yarn Node Name이 비어 있습니다.", this);
                 return;
             }
             if (dialogueRunner.IsDialogueRunning) return;
@@ -177,10 +173,6 @@ namespace NightDriver.Interaction
                 nodeNames = dialogueRunner.YarnProject.NodeNames;
                 nodeExists = nodeNames != null && System.Array.Exists(nodeNames, n => n == yarnNodeName);
             }
-
-            Debug.Log(
-                $"[InteractionPrompt] StartDialogue requested | node='{yarnNodeName}', existsInProject={nodeExists}, nodeCount={(nodeNames != null ? nodeNames.Length : 0)}",
-                this);
 
             dialogueRunner.StartDialogue(yarnNodeName);
         }
@@ -289,7 +281,6 @@ namespace NightDriver.Interaction
             if (!string.IsNullOrWhiteSpace(nodeName))
             {
                 yarnNodeName = nodeName;
-                Debug.Log($"[InteractionPrompt] SetYarnNode injected | node='{yarnNodeName}'", this);
             }
         }
 

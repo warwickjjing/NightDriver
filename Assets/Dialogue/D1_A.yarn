@@ -1,4 +1,4 @@
-﻿title: D1_A
+title: D1_A
 tags:
 ---
 
@@ -13,12 +13,13 @@ tags:
 기사: (생각) 뭔가 다른 목적지가 있는 걸까..
 기사: (생각) 손님이 많이 다쳐보이는데.. 병원에 안 가도 되는 걸까.
 
-// 선택지
+// 선택지 — 선택 즉시 HUD 목적지 전환 후 대화 종료
+// 목적지 도착 시 해당 목적지 오브젝트의 InteractionPrompt가 다음 대화를 시작합니다.
 -> xx빌딩으로 간다
-    <<jump Destination_Building>>
+    <<setDestination Destination_Building>>
 -> 병원으로 간다
     <<set $ascensionCount += 1>>
-    <<jump Destination_Hospital>>
+    <<setDestination Destination_Hospital>>
 ===
 
 title: Destination_Building
@@ -27,7 +28,6 @@ title: Destination_Building
 기사: xx빌딩 도착했습니다.
 손님: 감사합니다. 여기서 많은 걸 잃었거든요.
 // 손님 사라지는 연출은 Unity 이벤트로 처리
-<<event passengerVanish>>
 ===
 
 title: Destination_Hospital
@@ -35,5 +35,4 @@ title: Destination_Hospital
 // 진짜 목적지 — 승천
 기사: 저... 병원으로 가는 게 낫지 않을까 싶어서요.
 손님: 고마워요. 사실 거기서 죽었거든요.
-<<event passengerAscend>>
 ===

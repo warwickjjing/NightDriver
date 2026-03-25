@@ -1,6 +1,7 @@
 using NightDriver.Core;
 using NightDriver.Dialogue;
 using NightDriver.Interaction;
+using NightDriver.UI;
 using UnityEngine;
 
 namespace NightDriver.Client
@@ -22,20 +23,31 @@ namespace NightDriver.Client
         [SerializeField] private Transform defaultSpawnPoint;
         [Tooltip("손님별 ID 기반 스폰 위치를 사용하려면 씬의 SpawnPointSet을 연결하세요.")]
         [SerializeField] private SpawnPointSet spawnPointSet;
-        [Tooltip("활성화 시 즉시 현재 일차의 손님을 스폰합니다.\n" +
-                 "NightManager.Start()의 초기 이벤트와 함께 쓰면 중복 스폰이 발생할 수 있으니\n" +
-                 "CallFlowController를 쓰는 경우에는 비활성화하세요.")]
         [SerializeField] private bool spawnOnStart = false;
-        [SerializeField] private bool respawnOnDayChanged = true;
+        [SerializeField] private bool respawnOnDayChanged = false;
+
+        [Header("Navigation HUD")]
+        [Tooltip("손님 스폰 시 자동으로 HUD 목적지를 스폰 위치로 설정합니다.")]
+        [SerializeField] private NavigationHUD navigationHUD;
 
         private GameObject current;
+        private GameObject currentVehicle;
 
         // ─────────────────────────────────────────────
 
         private void Awake()
         {
+            // 폰 콜 수락 기반 플로우에서는 시작 자동 스폰/일차 변경 자동 스폰을 항상 비활성화합니다.
+            // (Inspector에서 실수로 켜져 있어도 런타임에서 강제 OFF)
+            spawnOnStart = false;
+            respawnOnDayChanged = false;
+
             if (nightManager == null && GameManager.Instance != null)
                 nightManager = GameManager.Instance.NightManager;
+
+            // NavigationHUD 자동 탐색 (Inspector 미할당 시)
+            if (navigationHUD == null)
+                navigationHUD = FindFirstObjectByType<NavigationHUD>();
         }
 
         private void OnEnable()
@@ -83,6 +95,12 @@ namespace NightDriver.Client
             current      = Instantiate(def.prefab, point.position, point.rotation);
             current.name = $"Client_{def.clientId}";
 
+            if (def.vehiclePrefab != null)
+            {
+                currentVehicle = Instantiate(def.vehiclePrefab, point.position, point.rotation);
+                currentVehicle.name = $"Vehicle_{def.clientId}";
+            }
+
             // InteractionPrompt에 Yarn 노드 이름 주입 (자동 배선)
             var prompt = current.GetComponentInChildren<InteractionPrompt>(true);
             if (prompt != null)
@@ -94,15 +112,26 @@ namespace NightDriver.Client
                 target.Configure(def.clientId, def.startNode);
 
             ClientRegistry.SetCurrent(current);
+
+            // HUD 목적지를 손님 자체로 설정 → 근접 시 자동으로 HUD 숨김
+            navigationHUD?.SetDestination(current.transform);
         }
 
         [ContextMenu("Despawn Current Client (Debug)")]
         public void DespawnCurrent()
         {
-            if (current == null) return;
-            ClientRegistry.ClearIfCurrent(current);
-            Destroy(current);
-            current = null;
+            if (current != null)
+            {
+                ClientRegistry.ClearIfCurrent(current);
+                Destroy(current);
+                current = null;
+            }
+
+            if (currentVehicle != null)
+            {
+                Destroy(currentVehicle);
+                currentVehicle = null;
+            }
         }
 
         // ─────────────────────────────────────────────

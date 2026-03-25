@@ -34,10 +34,6 @@ public class NewDialoguePresenter : DialoguePresenterBase
     // 대화 시작
     public override async YarnTask OnDialogueStartedAsync()
     {
-        Debug.Log("[NewDialoguePresenter] OnDialogueStartedAsync");
-        Debug.Log(
-            $"[NewDialoguePresenter] refs | panel={(dialoguePanel != null)}, speaker={(speakerText != null)}, line={(lineText != null)}, continueBtn={(continueButton != null)}, optionsPanel={(optionsPanel != null)}, optionPrefab={(optionButtonPrefab != null)}");
-
         if (dialoguePanel != null) dialoguePanel.SetActive(true);
         continuePressed = false;
         selectedOption = null;
@@ -56,7 +52,6 @@ public class NewDialoguePresenter : DialoguePresenterBase
         var lineId = line.TextID;
         var character = line.CharacterName ?? "(null)";
         var text = line.TextWithoutCharacterName.Text;
-        Debug.Log($"[1] id='{lineId}', character='{character}', text='{text}'");
 
         // 화자 이름 / 본문 표시
         speakerText.text = line.CharacterName ?? "";
