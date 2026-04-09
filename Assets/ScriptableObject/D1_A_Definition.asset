@@ -13,7 +13,16 @@ MonoBehaviour:
   m_Name: D1_A_Definition
   m_EditorClassIdentifier: 
   clientId: D1_A
-  prefab: {fileID: 7599862490280197976, guid: 4de1522e1b5cf044a81dcc3f9860aa07, type: 3}
-  vehiclePrefab: {fileID: 7983525705756347939, guid: 63be4e4cdfb06d64595d13db75cc4a76, type: 3}
+  prefab: {fileID: 7599862490280197976, guid: b1e451596ca1e7f43abbce6b2eb053f6, type: 3}
+  vehiclePrefab: {fileID: 5708493296862427535, guid: 59295c3d4d22b904b9b1b607e04cdde3, type: 3}
   spawnPointId: D1_A
+  vehicleSpawnPointId: 
+  vehicleSpawnLocalOffset: {x: 0, y: 2.2, z: 0}
   startNode: D1_A
+  destinationRules:
+  - destinationId: Destination_Building
+    arrivalYarnNode: Destination_Building
+    exitPointId: 
+  - destinationId: Destination_Hospital
+    arrivalYarnNode: Destination_Hospital
+    exitPointId: 

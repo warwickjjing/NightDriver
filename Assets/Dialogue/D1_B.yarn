@@ -1,4 +1,4 @@
-﻿title: D1_B
+title: D1_B
 tags:
 ---
 
@@ -7,9 +7,11 @@ tags:
 손님: xx오피스텔로 가주세요.
 기사: 네, 안전하게 모시겠습니다.
 
+<<pickupComplete>>
+
 // 선택지
 -> xx오피스텔로 간다
-    <<jump Destination_Building>>
+    <<setDestination Destination_Opistel>>
 ===
 
 title: Destination_Opistel

@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.365204
+      value: 81.38
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.83000374
+      value: 1.18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 84.91875
+      value: 29.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
       propertyPath: m_LocalRotation.w
@@ -68,6 +68,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
       insertIndex: -1
       addedObject: {fileID: -5963602271354886794}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2403125716924726059}
   m_SourcePrefab: {fileID: 100100000, guid: ddbe64d01f868fb4c8afe7b69cd18e91, type: 3}
 --- !u!1 &7599862490280197976 stripped
 GameObject:
@@ -137,11 +140,11 @@ MonoBehaviour:
   - id: Destination_Building
     location: {fileID: 383722951806198932, guid: d4afdebc1dee4b6449a7249be83498de, type: 3}
     exitPoint: {fileID: 7453916022252729754, guid: 4d7907147b5a69e44a16f979c983c1be, type: 3}
-    arrivalYarnNode: 
+    arrivalYarnNode: Destination_Building
   - id: Destination_Hospital
     location: {fileID: 7453916022252729754, guid: 4d7907147b5a69e44a16f979c983c1be, type: 3}
     exitPoint: {fileID: 383722951806198932, guid: d4afdebc1dee4b6449a7249be83498de, type: 3}
-    arrivalYarnNode: 
+    arrivalYarnNode: 'Destination_Hospital '
   playerTag: Player
   arrivalRadius: 5
   dropOffKey: 101
@@ -165,3 +168,17 @@ MonoBehaviour:
   arriveDistance: 0.15
   animator: {fileID: 0}
   walkAnimBool: IsWalking
+--- !u!114 &2403125716924726059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7599862490280197976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e01530eabc49214b9359cb7c2c76524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRenderers: []
+  highlightEmission: {r: 1, g: 0.1051434, b: 0, a: 1}

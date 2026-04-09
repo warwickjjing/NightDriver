@@ -1,3 +1,4 @@
+#nullable enable
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -8,12 +9,12 @@ using Yarn.Unity;
 public class NewDialoguePresenter : DialoguePresenterBase
 {
     [Header("UI 참조")]
-    [SerializeField] private GameObject dialoguePanel;   // DialoguePanel
-    [SerializeField] private TMP_Text speakerText;       // SpeakerText
-    [SerializeField] private TMP_Text lineText;          // LineText
-    [SerializeField] private Button continueButton;      // ContinueButton
-    [SerializeField] private GameObject optionsPanel;    // OptionsPanel
-    [SerializeField] private Button optionButtonPrefab;  // 선택지 버튼 프리팹
+    [SerializeField] private GameObject dialoguePanel = null!;   // DialoguePanel
+    [SerializeField] private TMP_Text speakerText = null!;       // SpeakerText
+    [SerializeField] private TMP_Text lineText = null!;          // LineText
+    [SerializeField] private Button continueButton = null!;      // ContinueButton
+    [SerializeField] private GameObject optionsPanel = null!;    // OptionsPanel
+    [SerializeField] private Button optionButtonPrefab = null!;  // 선택지 버튼 프리팹
     [Header("입력")]
     [SerializeField] private KeyCode continueKey = KeyCode.E;
     [SerializeField] private KeyCode alternateContinueKey = KeyCode.Space;
@@ -32,18 +33,20 @@ public class NewDialoguePresenter : DialoguePresenterBase
 
     // ──────────────────────────────────────────
     // 대화 시작
-    public override async YarnTask OnDialogueStartedAsync()
+    public override YarnTask OnDialogueStartedAsync()
     {
         if (dialoguePanel != null) dialoguePanel.SetActive(true);
         continuePressed = false;
         selectedOption = null;
+        return YarnTask.CompletedTask;
     }
 
     // 대화 종료
-    public override async YarnTask OnDialogueCompleteAsync()
+    public override YarnTask OnDialogueCompleteAsync()
     {
         Debug.Log("[NewDialoguePresenter] OnDialogueCompleteAsync");
         if (dialoguePanel != null) dialoguePanel.SetActive(false);
+        return YarnTask.CompletedTask;
     }
 
     // 한 줄 대사 표시
@@ -105,6 +108,17 @@ public class NewDialoguePresenter : DialoguePresenterBase
         var createdImages = new System.Collections.Generic.List<Image>(dialogueOptions.Length);
         foreach (var option in dialogueOptions)
         {
+            if (optionsPanel == null)
+            {
+                Debug.LogWarning("[NewDialoguePresenter] optionsPanel이 비어 있어 선택지를 표시할 수 없습니다.");
+                break;
+            }
+            if (optionButtonPrefab == null)
+            {
+                Debug.LogWarning("[NewDialoguePresenter] optionButtonPrefab이 비어 있어 선택지를 표시할 수 없습니다.");
+                break;
+            }
+
             var btn = Instantiate(optionButtonPrefab, optionsPanel.transform);
             var label = btn.GetComponentInChildren<TMP_Text>();
             if (label != null) label.text = option.Line.TextWithoutCharacterName.Text;
@@ -167,8 +181,11 @@ public class NewDialoguePresenter : DialoguePresenterBase
             selectedOption = dialogueOptions[selectedIndex];
 
         // 버튼 정리
-        foreach (Transform child in optionsPanel.transform)
-            Destroy(child.gameObject);
+        if (optionsPanel != null)
+        {
+            foreach (Transform child in optionsPanel.transform)
+                Destroy(child.gameObject);
+        }
 
         if (optionsPanel != null) optionsPanel.SetActive(false);
 

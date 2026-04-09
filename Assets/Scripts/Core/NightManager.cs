@@ -3,17 +3,6 @@ using UnityEngine;
 
 namespace NightDriver.Core
 {
-    public enum NightPhase
-    {
-        MainMenu,
-        NightStart,
-        DrivingLoop,
-        PickupEvent,
-        Dialogue,
-        HorrorEvent,
-        NightEnd,
-    }
-
     [Serializable]
     public sealed class NightRuntimeState
     {
@@ -94,10 +83,21 @@ namespace NightDriver.Core
 
         public void CompleteOneCall()
         {
+            CompleteOneCall(null);
+        }
+
+        /// <summary>
+        /// 콜 1건 완료 처리. <paramref name="callsLimitForTonight"/>가 있으면 그 값을 오늘의 목표 콜 수로 쓰고,
+        /// 없으면 <see cref="NightRuntimeState.callsPerNight"/>를 씁니다.
+        /// </summary>
+        public void CompleteOneCall(int? callsLimitForTonight)
+        {
             if (state.nightFailed) return;
 
             state.callsCompleted++;
-            if (state.callsCompleted >= Mathf.Max(1, state.callsPerNight))
+            int limit = callsLimitForTonight ?? Mathf.Max(1, state.callsPerNight);
+            limit = Mathf.Max(1, limit);
+            if (state.callsCompleted >= limit)
                 EndNight(success: true);
         }
 

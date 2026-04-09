@@ -1,5 +1,5 @@
 using NightDriver.Client;
-using NightDriver.Core;
+using NightDriver.Character;
 using NightDriver.Dialogue;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,8 +24,8 @@ namespace NightDriver.UI
         [SerializeField] private KeyCode toggleKey = KeyCode.Tab;
 
         [Header("Call Flow")]
-        [SerializeField] private NightManager nightManager;
-        [SerializeField] private ClientSpawner clientSpawner;
+        [Tooltip("비우면 씬에서 자동 탐색합니다. 콜 수락은 CallFlowController(ICallFlow) 한 곳으로 모읍니다.")]
+        [SerializeField] private CallFlowController callFlow;
         [SerializeField] private bool hidePhoneAfterAccept = true;
 
         private bool isVisible;
@@ -35,10 +35,8 @@ namespace NightDriver.UI
 
         private void Awake()
         {
-            if (nightManager == null && GameManager.Instance != null)
-                nightManager = GameManager.Instance.NightManager;
-            if (clientSpawner == null)
-                clientSpawner = FindFirstObjectByType<ClientSpawner>();
+            if (callFlow == null)
+                callFlow = FindFirstObjectByType<CallFlowController>();
 
             if (acceptCallButton != null)
             {
@@ -64,6 +62,13 @@ namespace NightDriver.UI
                 return;
             }
 
+            // 차량 탑승 중에는 폰(Tab)을 열지 않도록 강제합니다.
+            if (PlayerControlLock.VehicleSeated)
+            {
+                if (isVisible) SetVisible(false);
+                return;
+            }
+
             if (Input.GetKeyDown(toggleKey))
                 SetVisible(!isVisible);
 
@@ -84,25 +89,14 @@ namespace NightDriver.UI
 
         public void OnClickAcceptCall()
         {
-            if (nightManager == null || clientSpawner == null) return;
-
-            if (ClientRegistry.CurrentClientObject != null)
+            if (callFlow == null)
             {
-                Debug.Log("[PhoneUI] 이미 활성 손님이 있어 콜을 받을 수 없습니다.", this);
+                Debug.LogWarning("[PhoneUI] CallFlowController를 찾을 수 없습니다.", this);
                 return;
             }
 
-            int completed = nightManager.State.callsCompleted;
-            int limit = Mathf.Max(1, nightManager.State.callsPerNight);
-            if (completed >= limit)
-            {
-                Debug.Log("[PhoneUI] 오늘 콜을 모두 완료했습니다.", this);
+            if (!callFlow.TryAcceptCall())
                 return;
-            }
-
-            // callsCompleted 기준으로 다음 손님을 스폰합니다.
-            // ClientSpawner가 동시에 HUD 목적지도 연결합니다.
-            clientSpawner.SpawnCurrentClient();
 
             if (hidePhoneAfterAccept)
                 SetVisible(false);

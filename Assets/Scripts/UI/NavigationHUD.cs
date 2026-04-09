@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using NightDriver.Core;
 
 namespace NightDriver.UI
 {
@@ -20,9 +21,13 @@ namespace NightDriver.UI
         [Tooltip("플레이어 Transform. 비워두면 Camera.main 위치를 기준으로 사용합니다.")]
         [SerializeField] private Transform playerTransform;
 
+        [Header("Night (Optional)")]
+        [Tooltip("비워두면 GameManager.Instance.NightManager를 사용합니다. 일차가 바뀔 때 목적지를 초기화해 HUD를 끕니다.")]
+        [SerializeField] private NightManager nightManager;
+
         [Header("설정")]
-        [Tooltip("이 거리(m) 이내에 도달하면 HUD를 숨깁니다.")]
-        [SerializeField] private float hideDistance = 10f;
+        [Tooltip("이 거리(m) 이내에 도달하면 HUD를 숨깁니다. 값이 크면 스폰 직후 손님·차 근처에서도 '도착'으로 처리되어 화살표가 안 보일 수 있습니다.")]
+        [SerializeField] private float hideDistance = 3.5f;
 
         [Tooltip("거리 표시 포맷. {0}에 거리(m 정수)가 들어갑니다.")]
         [SerializeField] private string distanceFormat = "{0}m";
@@ -39,6 +44,21 @@ namespace NightDriver.UI
             mainCamera = Camera.main;
             // 시작 시 목적지가 없으면 숨김
             SetVisible(false);
+
+            if (nightManager == null && GameManager.Instance != null)
+                nightManager = GameManager.Instance.NightManager;
+        }
+
+        private void OnEnable()
+        {
+            if (nightManager != null)
+                nightManager.OnDayChanged += HandleDayChanged;
+        }
+
+        private void OnDisable()
+        {
+            if (nightManager != null)
+                nightManager.OnDayChanged -= HandleDayChanged;
         }
 
         private void LateUpdate()
@@ -50,9 +70,12 @@ namespace NightDriver.UI
             }
 
             // 플레이어(또는 카메라) 월드 위치
-            Vector3 origin = playerTransform != null
-                ? playerTransform.position
-                : (mainCamera != null ? mainCamera.transform.position : Vector3.zero);
+            // VehicleSeatInteraction은 플레이어 루트를 움직이지 않고 카메라만 좌석으로 이동시키므로
+            // 거리 계산 원점은 카메라를 우선합니다.
+            if (mainCamera == null) mainCamera = Camera.main;
+            Vector3 origin = mainCamera != null
+                ? mainCamera.transform.position
+                : (playerTransform != null ? playerTransform.position : Vector3.zero);
 
             float distance = Vector3.Distance(origin, destination.position);
 
@@ -120,6 +143,12 @@ namespace NightDriver.UI
                 arrowImage.gameObject.SetActive(visible);
             if (distanceText != null)
                 distanceText.gameObject.SetActive(visible);
+        }
+
+        private void HandleDayChanged(int _)
+        {
+            // 다음 날로 넘어갈 때는 이전 날 목적지 HUD를 끕니다.
+            SetDestination(null);
         }
     }
 }

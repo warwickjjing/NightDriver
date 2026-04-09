@@ -1,4 +1,6 @@
+using NightDriver.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace NightDriver.Core
 {
@@ -36,6 +38,23 @@ namespace NightDriver.Core
             if (nightManager == null)   nightManager   = GetComponentInChildren<NightManager>(true);
 
             metaSaveSystem?.Load();
+
+            NightCompletePanel.BindAllInScene(nightManager);
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            NightCompletePanel.BindAllInScene(nightManager);
         }
 
         // ─────────────────────────────────────────────

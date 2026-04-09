@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e66b840001373cd4596a9d2e92fa1530, type: 3}
   m_Name: Client Interaction Config
   m_EditorClassIdentifier: 
-  interactionDistance: 50
+  interactionDistance: 10
   playerTag: Player
   interactKey: 101
   defaultPromptText: "\uB9D0\uAC78\uAE30 [E]"
