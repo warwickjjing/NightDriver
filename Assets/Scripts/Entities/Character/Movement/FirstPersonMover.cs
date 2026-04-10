@@ -73,7 +73,7 @@ namespace NightDriver.Character.Movement
                 animator = GetComponentInChildren<Animator>(true);
             _skipAnimatorDrive = GetComponent<PlayerLocomotionAnimator>() != null;
         }
-ㅊ
+
         private void Update()
         {
             // CharacterController가 비활성화된 상태(예: 차량 탑승 중)에서는 Move를 호출하면 안 됩니다.

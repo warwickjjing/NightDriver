@@ -15,7 +15,7 @@ namespace NightDriver.UI
         [Tooltip("버튼이 생성될 부모(예: 왼쪽 패널의 VerticalLayoutGroup)")]
         [SerializeField] private RectTransform buttonContainer;
 
-        [Tooltip("Button 프리팹(자식에 TMP_Text가 있어야 라벨 세팅 가능)")]
+        [Tooltip("Button 프리팹(자식에 TMP_Text가 있어야 라벨 셋팅 가능)")]
         [SerializeField] private Button dayButtonPrefab;
 
         [Header("Days")]
@@ -98,4 +98,3 @@ namespace NightDriver.UI
         }
     }
 }
-
