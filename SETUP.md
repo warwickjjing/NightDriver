@@ -115,6 +115,29 @@
 
 > 참고: 기본 `Text`(UGUI) 기준입니다. TextMeshPro를 쓰는 경우 `DayCounterUI`를 TMP용으로 별도 버전(TMP_Text)으로 바꾸는 것을 권장합니다.
 
+### 파티클(이펙트) 버튼 토글(선택)
+
+Canvas에 버튼을 추가해두고, 클릭할 때마다 파티클 이펙트를 **On/Off 토글**하고 싶으면 아래 스크립트를 사용합니다.
+
+- **토글 스크립트**: `ParticleEffectUIButton`
+  - 버튼을 누를 때마다 이펙트 루트 오브젝트를 토글합니다.
+    - On: `SetActive(true)` + 자식 `ParticleSystem` 전부 `Play()`
+    - Off: `Stop(StopEmittingAndClear)` 후 `SetActive(false)`
+  - `particleRoot`에는 **씬에 있는 오브젝트**를 넣어도 되고, **프리팹 에셋**을 넣어도 됩니다.
+    - 프리팹 에셋을 넣으면, 첫 On 시점에만 한 번 Instantiate하고 이후에는 같은 인스턴스를 재사용합니다.
+
+파일:
+
+- `Assets/Scripts/UI/ParticleEffectUIButton.cs`
+
+#### 연결 방법(둘 중 하나)
+
+- **방법 A (추천)**: 이 스크립트를 아무 GameObject(예: Canvas 아래 빈 오브젝트)에 붙이고
+  - `triggerButton`에 버튼을 할당
+  - `particleRoot`에 프리팹/씬 오브젝트 할당
+  - (선택) `spawnParent`에 원하는 위치(Transform) 할당
+- **방법 B**: 버튼의 `OnClick()`에 `ParticleEffectUIButton.ToggleParticleEffect()`를 직접 연결
+
 ---
 
 ## 권장 Hierarchy 프리셋(씬 시작 템플릿)
@@ -364,6 +387,7 @@ App (또는 UI)
   - 그렇지 않으면 Yaw가 플레이어에만 적용되어 “좌우만 안 도는” 증상이 생길 수 있습니다.
 - **UI 클릭**: `EventSystem`이 씬에 반드시 1개 있어야 버튼 클릭이 동작합니다.
 - **매니저 연결**: `GameManager`의 인스펙터에서 `NightManager/MetaSaveSystem` 참조가 Null이면 하위에서 자동 탐색되도록 배치했는지 확인합니다.
+- **안개(포그) 토글 버튼이 안 보인다**: 현재 프로젝트 기본 UI에는 “안개 디버그 토글” 버튼이 포함되어 있지 않습니다(필요하면 별도 버튼/스크립트로 추가).
 
 ---
 

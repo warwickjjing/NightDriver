@@ -1,0 +1,542 @@
+// =====================================================
+// NightDriver — Yarn Dialogue Script
+// Day 1 ~ Day 6
+// =====================================================
+// 변수 설명
+// $clue_collected : 단서 획득 여부 (bool)
+// $ascension_count : 누적 승천 횟수 (int, GameManager)
+// =====================================================
+
+
+// =====================================================
+// DAY 1 — 직장인 (튜토리얼)
+// 톤: 일상, 복선 없음
+// 승천 조건: 없음 (튜토리얼)
+// =====================================================
+
+title: Day1_Passenger
+tags: day1
+---
+// 손님 탑승
+박수기: 안녕하세요. 집으로 가주세요.
+
+-> 네, 어디로 가시나요?
+    박수기: 마포구 상암동이요. 익숙하실 거예요.
+-> 늦은 시간이네요.
+    박수기: 야근이 길었어요. 요즘 매일 이러네요.
+
+박수기: ...조용한 밤이네요.
+박수기: 창밖 좀 봐도 될까요?
+
+-> 물론이죠.
+    박수기: 고맙습니다.
+-> 불편하신 건 없으세요?
+    박수기: 아뇨, 괜찮아요. 그냥... 좀 멍하고 싶어서요.
+
+박수기: 다 왔나요?
+
+<<set $clue_collected to false>>
+<<jump Day1_Destination>>
+===
+
+
+title: Day1_Destination
+tags: day1 destination
+---
+// 목적지 선택 — Day1은 분기 없음 (튜토리얼)
+-> [상암동 자택으로 이동]
+    <<jump Day1_Ending_Normal>>
+===
+
+
+title: Day1_Ending_Normal
+tags: day1 ending
+---
+박수기: 여기예요. 감사합니다.
+박수기: 좋은 밤 되세요.
+// 손님 하차 → 사라짐 (튜토리얼 처리)
+<<TriggerPassengerExit "normal">>
+===
+
+
+
+
+// =====================================================
+// DAY 2 — 젖은 옷 여성 (한강)
+// 톤: 현실 기반 불안감
+// 단서: 집에 가고 싶다는 대사
+// 승천 조건: 진짜 목적지(집) 선택
+// =====================================================
+
+title: Day2_Passenger
+tags: day2
+---
+<<set $clue_collected to false>>
+
+이지수: 한강공원으로 가주세요.
+이지수: ...밤바람 맞고 싶어서요.
+
+-> 많이 젖으셨네요.
+    이지수: 아, 비 맞았어요. 별거 아니에요.
+-> 한강은 자주 가세요?
+    이지수: 가끔요. 생각 정리할 때.
+
+이지수: 기사님, 저 사실...
+이지수: 집에 가고 싶은데 발이 안 떨어져요.
+
+-> 무슨 일 있으세요?
+    이지수: 아니요. 그냥... 못 들은 걸로 해주세요.
+    <<set $clue_collected to true>>
+-> 한강공원 다 왔어요.
+    이지수: 아, 네. 감사합니다.
+
+<<jump Day2_Destination>>
+===
+
+
+title: Day2_Destination
+tags: day2 destination
+---
+if $clue_collected
+    -> [한강공원에 내려드린다]
+        <<jump Day2_Ending_Surface>>
+    -> [손님, 집 주소 아세요?]
+        이지수: ...마포구 합정동이요.
+        이지수: 어떻게 알았어요?
+        -> 그냥 그런 것 같아서요.
+            이지수: ...고마워요.
+        <<jump Day2_Ending_Real>>
+else
+    -> [한강공원에 내려드린다]
+        <<jump Day2_Ending_Surface>>
+endif
+===
+
+
+title: Day2_Ending_Surface
+tags: day2 ending
+---
+이지수: 여기서 내릴게요.
+이지수: ...감사합니다.
+// 손님 하차 → 배회 처리
+<<TriggerPassengerExit "wander">>
+===
+
+
+title: Day2_Ending_Real
+tags: day2 ending ascension
+---
+이지수: 집이 그리웠나봐요.
+이지수: 오래 못 갔거든요.
+이지수: ...진짜 고맙습니다.
+// 손님 하차 → 승천 처리
+<<TriggerPassengerExit "ascend">>
+<<TriggerAscension>>
+===
+
+
+
+
+// =====================================================
+// DAY 3 — 노인 (단독주택)
+// 톤: 잔향형 공포, 사라짐
+// 단서: 기다리는 사람 언급
+// 승천 조건: 진짜 목적지(단독주택) 선택
+// =====================================================
+
+title: Day3_Passenger
+tags: day3
+---
+<<set $clue_collected to false>>
+
+최노인: 영등포구요. XX동 큰 길 아시죠?
+
+-> 네, 알겠습니다.
+    최노인: 고맙소.
+-> 어느 쪽으로 가면 될까요?
+    최노인: 예전엔 버스도 다녔는데... 지금도 가나 모르겠소.
+
+최노인: 오래된 사진을 꺼내보다가 나왔소.
+최노인: 집에 기다리는 사람이 있어서.
+
+-> 가족분이세요?
+    최노인: ...그런 셈이지.
+    <<set $clue_collected to true>>
+-> 늦은 시간에 괜찮으세요?
+    최노인: 괜찮아. 오래 걸리지 않을 거요.
+
+최노인: 거기 가면 알아볼 수 있을 거요.
+최노인: 오래된 집이라도 집은 집이니까.
+
+<<jump Day3_Destination>>
+===
+
+
+title: Day3_Destination
+tags: day3 destination
+---
+if $clue_collected
+    -> [XX동 큰 길에 내려드린다]
+        <<jump Day3_Ending_Surface>>
+    -> [혹시 예전에 사시던 단독주택 아닌가요?]
+        최노인: ...어떻게 알았소?
+        최노인: 맞소. 거기 가고 싶소.
+        -> 모셔다 드릴게요.
+            최노인: 고맙소. 진심으로.
+        <<jump Day3_Ending_Real>>
+else
+    -> [XX동 큰 길에 내려드린다]
+        <<jump Day3_Ending_Surface>>
+endif
+===
+
+
+title: Day3_Ending_Surface
+tags: day3 ending
+---
+최노인: 여기서 내리겠소.
+// 손님 하차 → 천천히 사라짐 연출
+<<TriggerPassengerExit "vanish">>
+===
+
+
+title: Day3_Ending_Real
+tags: day3 ending ascension
+---
+최노인: 맞소. 저기요.
+최노인: ...불이 켜져 있네.
+최노인: 오래 기다렸을 텐데.
+// 손님 하차 → 승천 처리
+<<TriggerPassengerExit "ascend">>
+<<TriggerAscension>>
+===
+
+
+
+
+// =====================================================
+// DAY 4 — 중년 여성 (철거된 아파트)
+// 톤: 슬픔 + 소름
+// 단서: 철거 사실 언급 반응
+// 승천 조건: 진짜 목적지(추모 공원) 선택
+// =====================================================
+
+title: Day4_Passenger
+tags: day4
+---
+<<set $clue_collected to false>>
+
+김명순: 도봉구 XX아파트요. 아세요?
+
+-> 네, 알겠습니다.
+    김명순: 고마워요.
+-> 혹시 거기 사세요?
+    김명순: 오래 살았죠. 이십 년도 넘었나.
+
+김명순: 요즘 세상이 너무 빨리 변해요.
+김명순: 익숙한 곳들이 다 사라지고.
+
+-> 많이 변했죠.
+    김명순: 그러게요.
+-> 저기... 그 아파트는 작년에 철거됐는데요.
+    김명순: ...알아요.
+    김명순: 그래도 한 번만 더 보고 싶어서요.
+    김명순: 거기서 많이 있었거든요.
+    <<set $clue_collected to true>>
+
+김명순: 빨리 가고 싶어요.
+
+<<jump Day4_Destination>>
+===
+
+
+title: Day4_Destination
+tags: day4 destination
+---
+if $clue_collected
+    -> [철거 현장으로 이동]
+        <<jump Day4_Ending_Surface>>
+    -> [혹시 추모공원 가시려는 거 아닌가요?]
+        김명순: ...어떻게.
+        김명순: 거기 남편이 있어요.
+        김명순: 아파트 철거되던 날이 기일이라서.
+        -> 모셔다 드릴게요.
+            김명순: 고마워요. 정말.
+        <<jump Day4_Ending_Real>>
+else
+    -> [철거 현장으로 이동]
+        <<jump Day4_Ending_Surface>>
+endif
+===
+
+
+title: Day4_Ending_Surface
+tags: day4 ending
+---
+김명순: 여기서 내릴게요.
+김명순: ...아직 있네.
+// 손님 하차 → 배회 처리
+<<TriggerPassengerExit "wander">>
+===
+
+
+title: Day4_Ending_Real
+tags: day4 ending ascension
+---
+김명순: 다 왔네요.
+김명순: 늦어서 미안해요, 당신.
+김명순: ...기다려줘서 고마워.
+// 손님 하차 → 승천 처리
+<<TriggerPassengerExit "ascend">>
+<<TriggerAscension>>
+===
+
+
+
+
+// =====================================================
+// DAY 5 — 정장 남성 (터널)
+// 톤: 시각 충격 + 점프스케어 1회
+// 단서: 자기혐오 대사
+// 승천 조건: 진짜 목적지(병원) 선택
+// 점프스케어: 터널 통과 중 암전 후 조수석 실루엣
+// =====================================================
+
+title: Day5_Passenger
+tags: day5
+---
+<<set $clue_collected to false>>
+
+이재훈: XX빌딩이요. 강남 쪽이에요.
+
+-> 알겠습니다.
+    이재훈: 감사합니다.
+-> 야근하고 오시는 건가요?
+    이재훈: ...뭐 그런 셈이죠.
+
+// 터널 진입 전
+이재훈: 저 많이 지쳤어요.
+이재훈: 요즘 뭘 해도 안 풀려서.
+
+-> 다들 그런 시기가 있죠.
+    이재훈: 그러면 좋겠어요.
+-> 많이 힘드신 것 같네요.
+    이재훈: ...저 솔직히 말하면요.
+    이재훈: 오늘 제가 왜 이러고 있나 싶어요.
+    이재훈: 그냥 아무것도 안 하고 싶었는데.
+    <<set $clue_collected to true>>
+
+// 터널 진입 — 점프스케어 트리거
+<<TriggerTunnelJumpscare>>
+
+이재훈: ...기사님, 방금 뭔가 보이지 않았어요?
+
+-> 아무것도 없었어요.
+    이재훈: ...그렇군요.
+-> 저도 봤어요.
+    이재훈: 그렇죠. 저만 그런 게 아니었군요.
+
+<<jump Day5_Destination>>
+===
+
+
+title: Day5_Destination
+tags: day5 destination
+---
+if $clue_collected
+    -> [XX빌딩으로 이동]
+        <<jump Day5_Ending_Surface>>
+    -> [병원 가셔야 하는 거 아닌가요?]
+        이재훈: ...어떻게 알았어요.
+        이재훈: 오늘 검사 결과 듣기로 했는데.
+        이재훈: 계속 미루고 있었거든요.
+        -> 가셔야 할 것 같아요.
+            이재훈: ...맞아요. 가야죠.
+            이재훈: 고맙습니다.
+        <<jump Day5_Ending_Real>>
+else
+    -> [XX빌딩으로 이동]
+        <<jump Day5_Ending_Surface>>
+endif
+===
+
+
+title: Day5_Ending_Surface
+tags: day5 ending
+---
+이재훈: 다 왔네요. 감사합니다.
+// 손님 하차 → 소멸 처리
+<<TriggerPassengerExit "vanish">>
+===
+
+
+title: Day5_Ending_Real
+tags: day5 ending ascension
+---
+이재훈: 병원 앞이네요.
+이재훈: 무서워서 자꾸 도망쳤는데.
+이재훈: 이제 들어가야겠죠.
+이재훈: 감사합니다. 덕분이에요.
+// 손님 하차 → 승천 처리
+<<TriggerPassengerExit "ascend">>
+<<TriggerAscension>>
+===
+
+
+
+
+// =====================================================
+// DAY 6 — 사고 여성 (병원)
+// 톤: 청각 + 근접 충격 / 점프스케어 2회차
+// 단서: 사고 암시 대사
+// 승천 조건: 진짜 목적지(집) 선택
+// 점프스케어: "저 언제 죽었어요?" 속삭임
+// =====================================================
+
+title: Day6_Passenger
+tags: day6
+---
+<<set $clue_collected to false>>
+
+박서연: XX병원이요.
+
+-> 많이 다치셨어요?
+    박서연: ...별거 아니에요.
+-> 늦은 시간인데 병원이요?
+    박서연: 그냥 들러야 할 데가 있어서요.
+
+박서연: 기사님, 저 이상한 것 같죠?
+
+-> 아니요, 괜찮아 보이세요.
+    박서연: 그럼 다행이에요.
+-> 왜 그렇게 생각하세요?
+    박서연: 오늘 이상한 일이 많았거든요.
+    박서연: 사람들이 저를 못 보는 것 같고.
+    박서연: 소리를 질러도 아무도 안 돌아보고.
+    <<set $clue_collected to true>>
+
+// 점프스케어 트리거 — 속삭임
+<<TriggerWhisperJumpscare>>
+
+박서연: ...기사님.
+박서연: 저 언제 죽었어요?
+
+-> (대답하지 않는다)
+박서연: 괜찮아요. 알 것 같아요.
+
+<<jump Day6_Destination>>
+===
+
+
+title: Day6_Destination
+tags: day6 destination
+---
+if $clue_collected
+    -> [XX병원으로 이동]
+        <<jump Day6_Ending_Surface>>
+    -> [집으로 가고 싶으시죠?]
+        박서연: ...네.
+        박서연: 엄마한테 말도 못 하고 왔거든요.
+        박서연: 한 번만 볼 수 있으면.
+        -> 모셔다 드릴게요.
+            박서연: 고마워요.
+        <<jump Day6_Ending_Real>>
+else
+    -> [XX병원으로 이동]
+        <<jump Day6_Ending_Surface>>
+endif
+===
+
+
+title: Day6_Ending_Surface
+tags: day6 ending
+---
+박서연: 여기서 내릴게요.
+// 손님 하차 → 배회 처리
+<<TriggerPassengerExit "wander">>
+===
+
+
+title: Day6_Ending_Real
+tags: day6 ending ascension
+---
+박서연: 여기예요.
+박서연: 불이 켜져 있네.
+박서연: 엄마 아직 안 잔다.
+박서연: ...들어가 볼게요.
+박서연: 고마워요, 기사님. 진짜로.
+// 손님 하차 → 승천 처리
+<<TriggerPassengerExit "ascend">>
+<<TriggerAscension>>
+===
+
+
+
+
+// =====================================================
+// DAY 7 — 지현 (조건부 / ascensionCount >= 4)
+// 톤: 감정적 피크 / 진실 해소
+// 조건: ascensionCount >= 4
+// =====================================================
+
+title: Day7_Passenger
+tags: day7 conditional
+---
+// GameManager에서 조건 확인 후 이 노드 호출
+지현: 오빠.
+
+-> ...지현아.
+    지현: 알아봤구나.
+-> 누구세요?
+    지현: 오빠잖아. 나야.
+
+지현: 나 찾고 있었어?
+
+-> 응. 많이 걱정했어.
+    지현: 알아. 나도 알고 있었어.
+-> 어디 있었어.
+    지현: 오빠가 아는 곳에.
+
+지현: 강변으로 가줘.
+지현: 거기서 얘기하자.
+
+<<jump Day7_Destination>>
+===
+
+
+title: Day7_Destination
+tags: day7 destination
+---
+-> [강변으로 이동]
+    <<jump Day7_Ending_Surface>>
+-> [지현아, 사건 현장에 가야 하지 않겠어?]
+    지현: ...오빠 알고 있었구나.
+    지현: 무서워서 못 갔는데.
+    지현: 같이 가줄 수 있어?
+    -> 그래. 같이 가자.
+        <<jump Day7_Ending_Real_A>>
+===
+
+
+title: Day7_Ending_Surface
+tags: day7 ending
+---
+지현: 여기 좋다.
+지현: 오빠, 나 괜찮아.
+지현: 걱정하지 마.
+// 엔딩 B — 집착
+<<TriggerEnding "B">>
+===
+
+
+title: Day7_Ending_Real_A
+tags: day7 ending ascension
+---
+지현: 다 왔다.
+지현: 생각보다 별거 없네.
+지현: 오빠, 나 이제 갈 것 같아.
+지현: 잘 살아. 진짜로.
+// 엔딩 A — 해방
+<<TriggerPassengerExit "ascend">>
+<<TriggerEnding "A">>
+===
