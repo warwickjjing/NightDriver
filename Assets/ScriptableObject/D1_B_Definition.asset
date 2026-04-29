@@ -23,3 +23,9 @@ MonoBehaviour:
   - destinationId: Destination_Opistel
     arrivalYarnNode: Destination_Opistel
     exitPointId: 
+  displayName: "\uC774\uBC88\uC190\uB2D8"
+  pickupAddressFull: "\uC744\uC9C0\uB85C3\uAC00 107 Tower"
+  pickupAddressShort: "\uC11C\uB300\uBB38\uC5ED 8\uBC88\uCD9C\uAD6C"
+  estimatedFareWon: 5800
+  walkingTimeLabel: "\uC57D 2\uBD84"
+  driverMonologue: 

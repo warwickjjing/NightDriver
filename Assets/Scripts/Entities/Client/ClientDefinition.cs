@@ -45,6 +45,28 @@ namespace NightDriver.Client
         [Tooltip("목적지별 도착 대화/하차 지점을 데이터로 관리합니다. 비워두면 손님 프리팹(ClientBehaviour)의 기존 Destinations 설정을 그대로 사용합니다.")]
         public DestinationRule[] destinationRules = System.Array.Empty<DestinationRule>();
 
+        // ─── 콜 앱 UI 표시 정보 ───────────────────────────────────────────────
+
+        [Header("콜 앱 — 손님 표시 정보")]
+        [Tooltip("폰 콜 앱에 표시할 손님 이름. 비워두면 clientId를 사용합니다. (예: 손님 #3)")]
+        public string displayName;
+
+        [Tooltip("픽업 위치 전체 주소 (카드 상단에 표시). 예: B구역 · 동양아파트 지하주차장 B2")]
+        public string pickupAddressFull;
+
+        [Tooltip("픽업 위치 약식 (경로 섹션에 표시). 예: 지하주차장 B2")]
+        public string pickupAddressShort;
+
+        [Tooltip("예상 요금 (원). 표시 포맷은 PhoneCallApp에서 설정합니다. 예: 18000")]
+        public int estimatedFareWon = 4800;
+
+        [Tooltip("도보 소요 시간 문구. 예: 약 2분")]
+        public string walkingTimeLabel = "약 2분";
+
+        [Header("콜 앱 — 도현 독백 (일차별)")]
+        [Tooltip("콜 수락 직후 도현이 내뱉는 독백. 일차에 무관하게 이 손님만의 독백을 넣을 때 사용합니다.\n비워두면 CallNotificationSystem의 driverMonologues 배열(일차 기준)을 사용합니다.")]
+        [TextArea(2, 4)]
+        public string driverMonologue;
     }
 }
 

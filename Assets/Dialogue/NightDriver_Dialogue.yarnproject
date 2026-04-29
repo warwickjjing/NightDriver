@@ -5,6 +5,7 @@
   ],
   "excludeFiles": [
     "**/*~/*",
+    "NightDriver_Dialogues.yarn",
     "./Samples/Yarn Spinner*/*"
   ],
   "localisation": {},

@@ -26,3 +26,9 @@ MonoBehaviour:
   - destinationId: Destination_Hospital
     arrivalYarnNode: Destination_Hospital
     exitPointId: 
+  displayName: "\uC77C\uBC88\uC190\uB2D8"
+  pickupAddressFull: "\uCCAD\uB77C\uD55C\uB0B4\uB85C 72\uBC88\uAE38 7-29 \uACE8\uB4DC\uD074\uB798\uC2A4"
+  pickupAddressShort: "\uCCAD\uB7C9\uB9AC"
+  estimatedFareWon: 4800
+  walkingTimeLabel: "\uC57D 2\uBD84"
+  driverMonologue: 
