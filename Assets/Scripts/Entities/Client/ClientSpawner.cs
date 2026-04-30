@@ -102,6 +102,19 @@ namespace NightDriver.Client
 
         // ─────────────────────────────────────────────
 
+        /// <summary>
+        /// 현재 일차·콜 인덱스 기준으로 다음에 스폰될 ClientDefinition을 반환합니다.
+        /// 실제 스폰은 하지 않습니다.
+        /// WeekSchedule에 해당 손님이 없으면 null을 반환합니다.
+        /// </summary>
+        public ClientDefinition PeekNextClient()
+        {
+            if (nightManager == null || schedule == null) return null;
+            int day       = nightManager.State.dayIndex;
+            int callIndex = nightManager.State.callsCompleted;
+            return schedule.GetClientFor(day, callIndex);
+        }
+
         [ContextMenu("Spawn Current Client (Debug)")]
         public void SpawnCurrentClient()
         {

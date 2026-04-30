@@ -99,6 +99,10 @@ namespace NightDriver.UI
 
         private void Awake()
         {
+            // appRoot를 비워둔 경우 자기 자신을 루트로 사용합니다.
+            if (appRoot == null)
+                appRoot = gameObject;
+
             // 수락 버튼 — Awake에서 자동 연결 (Inspector OnClick 불필요)
             if (acceptButton != null)
             {
@@ -119,8 +123,6 @@ namespace NightDriver.UI
 
             if (monologueBox != null)
                 monologueBox.SetActive(false);
-
-            SetAppActive(false);
         }
 
         // ─────────────────────────────────────────────────────────────────────
@@ -133,6 +135,11 @@ namespace NightDriver.UI
         public void SetCallInfo(ClientDefinition def)
         {
             _currentDef = def;
+
+            // 새 콜 데이터가 들어오면 버튼/피드백 상태를 기본값으로 복구합니다.
+            if (acceptButton != null) acceptButton.interactable = true;
+            if (rejectButton != null) rejectButton.interactable = true;
+            if (acceptedFeedbackObject != null) acceptedFeedbackObject.SetActive(false);
 
             if (def == null)
             {
@@ -200,6 +207,9 @@ namespace NightDriver.UI
         /// <summary>콜 앱 화면을 활성화합니다.</summary>
         public void ShowCallScreen()
         {
+            // 화면을 다시 열 때 수락 가능 상태를 보장합니다.
+            if (acceptButton != null) acceptButton.interactable = true;
+            if (rejectButton != null) rejectButton.interactable = true;
             SetAppActive(true);
         }
 
@@ -256,7 +266,8 @@ namespace NightDriver.UI
 
         private void OnClickReject()
         {
-            // 거절: 폰만 닫습니다 (추후 거절 로직 확장 가능)
+            // 거절: 홈 화면으로 돌아간 뒤 폰을 닫습니다.
+            PhoneScreenManager.Instance?.ShowHome();
             PhoneManager.Instance?.ClosePhone();
         }
 

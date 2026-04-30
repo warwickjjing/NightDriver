@@ -65,6 +65,10 @@ namespace NightDriver.UI
         [Tooltip("PhoneCallApp의 뱃지도 함께 동기화합니다.")]
         [SerializeField] private PhoneCallApp callApp;
 
+        [Header("화면 전환")]
+        [Tooltip("폰 내부 화면 전환 컴포넌트. 비우면 자동 탐색합니다.")]
+        [SerializeField] private PhoneScreenManager screenManager;
+
         [Header("상태 표시 (선택)")]
         [Tooltip("'운전 중 사용 불가' 안내 텍스트 (선택)")]
         [SerializeField] private TMP_Text unavailableHintText;
@@ -104,6 +108,10 @@ namespace NightDriver.UI
             // 안내 텍스트 초기 숨김
             if (unavailableHintText != null)
                 unavailableHintText.gameObject.SetActive(false);
+
+            // PhoneScreenManager 자동 탐색
+            if (screenManager == null)
+                screenManager = GetComponentInChildren<PhoneScreenManager>(true);
         }
 
         private void OnDestroy()
@@ -163,7 +171,8 @@ namespace NightDriver.UI
 
             SetPanelTarget(shownAnchoredY);
 
-            // CallNotificationSystem에 폰 열림 알림 (미수신 콜 있으면 콜 앱으로 전환)
+            // 홈 화면부터 시작 (ShowHome은 Awake에서 이미 세팅돼 있음)
+            // CallNotificationSystem에서 콜이 있으면 콜 앱으로 자동 전환합니다.
             CallNotificationSystem.Instance?.OnPhoneOpened();
         }
 
@@ -177,6 +186,9 @@ namespace NightDriver.UI
             Cursor.visible = false;
 
             SetPanelTarget(hiddenAnchoredY);
+
+            // 닫을 때 홈 화면으로 초기화 → 다음에 열 때 홈부터 시작
+            screenManager?.OnPhoneClosed();
         }
 
         /// <summary>
